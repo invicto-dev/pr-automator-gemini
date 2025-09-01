@@ -1,29 +1,47 @@
-import { Gitlab } from "@gitbeaker/node";
+import axios from "axios";
 import { config } from "../config";
 import { IGitProvider, CreatePROptions } from "./provider.interface";
 
 class GitLabService implements IGitProvider {
-  private api: any;
+  private token: string;
+  private apiUrl: string;
 
-  constructor(token: string) {
-    this.api = new Gitlab({ token });
+  constructor(token: string, apiUrl: string) {
+    this.token = token;
+    this.apiUrl = apiUrl;
   }
 
   async create(options: CreatePROptions): Promise<string | null> {
     try {
       if (!config.gitlabProjectId) {
         throw new Error(
-          "The GITLAB_PROJECT_ID environment variable is required for GitLab."
+          "The PR_AUTOMATOR_GITLAB_PROJECT_ID environment variable is required for GitLab."
         );
       }
-      const mr = await this.api.MergeRequests.create(
-        config.gitlabProjectId,
-        options.head, // source_branch
-        options.base, // target_branch
-        options.title,
-        { description: options.body }
+      if (!config.gitLabApiUrl) {
+        throw new Error(
+          "The PR_AUTOMATOR_GITLAB_API_URL environment variable is required for GitLab."
+        );
+      }
+      const res = await axios.post(
+        `${this.apiUrl}/projects/${encodeURIComponent(
+          config.gitlabProjectId
+        )}/merge_requests`,
+        {
+          source_branch: options.head,
+          target_branch: options.base,
+          title: options.title,
+          description: options.body,
+        },
+        {
+          headers: {
+            "PRIVATE-TOKEN": this.token,
+            "Content-Type": "application/json",
+          },
+        }
       );
-      return mr.web_url;
+
+      return res.data.web_url;
     } catch (error: any) {
       console.error(`❌ Error creating MR in GitLab: ${error.message}`);
       return null;
@@ -31,4 +49,7 @@ class GitLabService implements IGitProvider {
   }
 }
 
-export const gitlabService = new GitLabService(config.gitlabToken || "");
+export const gitlabService = new GitLabService(
+  config.gitlabToken || "",
+  config.gitLabApiUrl || ""
+);

@@ -67,6 +67,10 @@ PR_AUTOMATOR_GITHUB_TOKEN="ghp_your_github_token_here"
 # GitLab Personal Access Token with 'api' scope (Required for GitLab)
 PR_AUTOMATOR_GITLAB_TOKEN="glpat-your_gitlab_token_here"
 
+# GitLab API URL (Required for GitLab)
+PR_AUTOMATOR_GITLAB_API_URL="https://gitlab.com/api/v4"
+for enterprise users: https://gitlab.<company-name>.com/api/v4
+
 # GitLab Project ID (Required for GitLab)
 # You can find this on your project's homepage in GitLab.
 PR_AUTOMATOR_GITLAB_PROJECT_ID="12345678"
