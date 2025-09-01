@@ -1,0 +1,38 @@
+{
+  "name": "pr-automator-gemini",
+  "version": "1.0.0",
+  "description": "A CLI to automate the creation of Pull Requests on GitHub/GitLab using Google Gemini AI to generate titles and descriptions.",
+  "main": "dist/index.js",
+  "bin": {
+    "create-pr": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [
+    "git",
+    "pull-request",
+    "gemini",
+    "ai",
+    "automation"
+  ],
+  "author": "victo-hugo",
+  "license": "ISC",
+  "dependencies": {
+    "@gitbeaker/node": "^35.8.0",
+    "@google/generative-ai": "^0.1.3",
+    "@octokit/rest": "^20.0.2",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "inquirer": "^8.2.4",
+    "simple-git": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^8.2.1",
+    "@types/node": "^20.11.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
