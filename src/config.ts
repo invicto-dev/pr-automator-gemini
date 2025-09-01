@@ -13,8 +13,6 @@ export const config: Config = {
   gitlabProjectId: process.env.PR_AUTOMATOR_GITLAB_PROJECT_ID,
 };
 
-console.log(config);
-
 if (!config.geminiApiKey) {
   console.error(
     "❌ Erro: The environment variable PR_AUTOMATOR_GEMINI_API_KEY has not been defined."
