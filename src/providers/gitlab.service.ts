@@ -1,4 +1,4 @@
-import { Gitlab } from "@gitbeaker/node";
+import { Gitlab } from "@gitbeaker/rest";
 import { config } from "../config";
 import { IGitProvider, CreatePROptions } from "./provider.interface";
 
@@ -13,7 +13,7 @@ class GitLabService implements IGitProvider {
     try {
       if (!config.gitlabProjectId) {
         throw new Error(
-          "The GITLAB_PROJECT_ID environment variable is required for GitLab."
+          "The PR_AUTOMATOR_GITLAB_PROJECT_ID environment variable is required for GitLab."
         );
       }
       const mr = await this.api.MergeRequests.create(
