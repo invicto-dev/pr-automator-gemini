@@ -1,5 +1,5 @@
-export type PRType = 'feature' | 'bug' | 'refactor' | 'chore' | 'docs';
-export type GitProvider = 'github' | 'gitlab';
+export type PRType = "feature" | "bug" | "refactor" | "chore" | "docs";
+export type GitProvider = "github" | "gitlab";
 
 export interface CLIOptions {
   type?: PRType;
@@ -25,4 +25,5 @@ export interface Config {
   repoOwner?: string;
   repoName?: string;
   gitlabProjectId?: string;
+  gitLabApiUrl?: string;
 }

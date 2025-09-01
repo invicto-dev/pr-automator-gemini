@@ -11,6 +11,7 @@ export const config: Config = {
   repoOwner: process.env.PR_AUTOMATOR_REPO_OWNER,
   repoName: process.env.PR_AUTOMATOR_REPO_NAME,
   gitlabProjectId: process.env.PR_AUTOMATOR_GITLAB_PROJECT_ID,
+  gitLabApiUrl: process.env.PR_AUTOMATOR_GITLAB_API_URL,
 };
 
 if (!config.geminiApiKey) {
