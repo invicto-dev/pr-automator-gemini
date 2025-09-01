@@ -7,8 +7,6 @@ Tired of writing repetitive Pull Request descriptions? This command-line interfa
 
 Boost your productivity, standardize your documentation, and speed up the code review process!
 
-_A screenshot or GIF of the tool in action would be great here._
-
 ## Key Features 🚀
 
 - **AI-Generated Content**: Analyzes the `git diff` to create detailed titles and descriptions for your PRs.

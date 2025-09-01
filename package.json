@@ -18,6 +18,10 @@
     "ai",
     "automation"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invicto-dev/pr-automator-gemini.git"
+  },
   "author": "victo-hugo",
   "license": "ISC",
   "dependencies": {
