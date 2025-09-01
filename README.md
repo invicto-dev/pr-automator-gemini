@@ -29,18 +29,22 @@ Before you begin, ensure you have the following:
 
 ## Installation 📦
 
-Install the tool on your machine using NPM:
+You can install the tool in two ways, depending on your needs.
 
-globally:
+### Option 1: Global Installation
+
+This is the recommended approach if you want to use `pr-automator-gemini` in **multiple projects** on your machine. The `create-pr` command will be available everywhere in your terminal.
 
 ```bash
 npm install -g pr-automator-gemini
 ```
 
-or locally:
+### Option 2: Local Installation
+
+This is ideal if you want to include the tool as a development dependency in a **single project**. This allows you to lock in a specific version for that project.
 
 ```bash
-npm install pr-automator-gemini
+npm install pr-automator-gemini --save-dev
 ```
 
 ---
@@ -74,25 +78,59 @@ PR_AUTOMATOR_GITLAB_PROJECT_ID="12345678"
 
 ## Usage 💻
 
-With everything configured, using the tool is simple. Navigate to your project's repository, add and commit your changes, and then run:
+How you run the command depends on how you installed it. Navigate to your project's repository, add and commit your changes, and then follow the appropriate instructions below.
 
-### Interactive Mode (Recommended for getting started)
+### If Installed Globally
 
-Simply run the `create` command, and the tool will ask you the necessary questions.
+The `create-pr` command is directly available in your terminal.
+
+**Interactive Mode:**
 
 ```bash
 create-pr create
 ```
 
-### Direct Mode (Using Flags)
-
-Pass all the information at once for a faster experience.
+**Direct Mode (with flags):**
 
 ```bash
 create-pr create --type feature --base main --provider github
 ```
 
-### Command Options
+### If Installed Locally
+
+You must use a package runner like `npx` to execute the command. `npx` will automatically find the command inside your project's `node_modules` folder.
+
+**Interactive Mode:**
+
+```bash
+npx create-pr create
+```
+
+**Direct Mode (with flags):**
+
+```bash
+npx create-pr create --type feature --base main
+```
+
+**Alternative (using NPM Scripts):**
+You can also add the command to the `scripts` section of your project's `package.json` to create a handy shortcut.
+
+```json
+// package.json
+"scripts": {
+  "new-pr": "create-pr create"
+}
+```
+
+Then, run it with:
+
+```bash
+npm run new-pr
+```
+
+---
+
+## Command Options
 
 | Flag         | Alias | Description                                  | Valid Options                                 | Default   |
 | ------------ | ----- | -------------------------------------------- | --------------------------------------------- | --------- |
