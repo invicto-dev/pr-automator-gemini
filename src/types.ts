@@ -14,7 +14,6 @@ export interface FinalOptions {
 }
 
 export interface PRContent {
-  title: string;
   body: string;
 }
 

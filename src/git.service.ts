@@ -3,12 +3,35 @@ import { config } from "./config";
 
 const git: SimpleGit = simpleGit();
 
+export const getCurrentBranchName = async () => {
+  try {
+    const branchSummary = await git.branch();
+    const currentBranch = branchSummary.current;
+
+    return currentBranch;
+  } catch (error) {
+    console.error("Failed to get branch name:", error);
+    return undefined;
+  }
+};
+
 export const getCurrentBranch = async (): Promise<string> => {
   return await git.revparse(["--abbrev-ref", "HEAD"]);
 };
 
 export const getDiff = async (baseBranch: string): Promise<string> => {
-  return await git.diff([baseBranch, "--staged"]);
+  const excludePatterns = [
+    ":(exclude)package-lock.json",
+    ":(exclude)yarn.lock",
+    ":(exclude)pnpm-lock.yaml",
+    ":(exclude)**/dist/**",
+    ":(exclude)**/*.min.js",
+    ":(exclude)**/*.snap",
+  ];
+
+  const diffCommand = [`${baseBranch}...HEAD`, "--", ".", ...excludePatterns];
+
+  return await git.diff(diffCommand);
 };
 
 export const getRepoDetails = async (): Promise<{

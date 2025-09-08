@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import { CLIOptions, FinalOptions } from "./types";
-import { getCurrentBranch, getDiff } from "./git.service";
+import { getCurrentBranch, getCurrentBranchName, getDiff } from "./git.service";
 import { generatePRContent } from "./ai.service";
 import { githubService } from "./providers/github.service";
 import { gitlabService } from "./providers/gitlab.service";
@@ -54,6 +54,20 @@ export async function handleCreateCommand(options: CLIOptions) {
   try {
     const finalOptions = await promptForMissingOptions(options);
 
+    if (finalOptions.provider === "github") {
+      if (!config.githubToken)
+        throw new Error(" PR_AUTOMATOR_GITHUB_TOKEN not defined in .env");
+    }
+
+    if (finalOptions.provider === "gitlab") {
+      if (!config.gitlabToken)
+        throw new Error(" PR_AUTOMATOR_GITLAB_TOKEN not defined in .env");
+      if (!config.gitlabProjectId)
+        throw new Error(" PR_AUTOMATOR_GITLAB_PROJECT_ID not defined in .env");
+      if (!config.gitLabApiUrl)
+        throw new Error(" PR_AUTOMATOR_GITLAB_API_URL not defined in .env");
+    }
+
     console.log("🤖 Analyzing changes...");
     const currentBranch = await getCurrentBranch();
     if (currentBranch === finalOptions.base) {
@@ -71,13 +85,28 @@ export async function handleCreateCommand(options: CLIOptions) {
       return;
     }
 
+    const brachName = await getCurrentBranchName();
+    const defaultTitle = `${finalOptions.type.toUpperCase()}: ${brachName}`;
+
+    const { inputTitle } = await inquirer.prompt([
+      {
+        type: "question",
+        name: "inputTitle",
+        message: "What is the title of the PR?",
+        default: defaultTitle,
+      },
+    ]);
+
     console.log("🧠 Generating content with Gemini AI...");
     const prContent = await generatePRContent(diff, finalOptions.type);
     if (!prContent) return;
 
     console.log("\n----------------------------------------");
-    console.log(`Title: ${prContent.title}`);
-    console.log(`Description:\n${prContent.body}`);
+    console.log(`Title: ${inputTitle}`);
+    console.log("\n----------------------------------------");
+
+    console.log(`Content:`);
+    console.log(`\n${prContent.body}`);
     console.log("----------------------------------------\n");
 
     const { proceed } = await inquirer.prompt([
@@ -102,18 +131,16 @@ export async function handleCreateCommand(options: CLIOptions) {
 
     let prUrl: string | null = null;
     if (finalOptions.provider === "github") {
-      if (!config.githubToken)
-        throw new Error(" PR_AUTOMATOR_GITHUB_TOKEN not defined in .env");
       prUrl = await githubService.create({
         ...prContent,
+        title: inputTitle,
         head: currentBranch,
         base: finalOptions.base,
       });
     } else {
-      if (!config.gitlabToken)
-        throw new Error(" PR_AUTOMATOR_GITLAB_TOKEN not defined in .env");
       prUrl = await gitlabService.create({
         ...prContent,
+        title: inputTitle,
         head: currentBranch,
         base: finalOptions.base,
       });
