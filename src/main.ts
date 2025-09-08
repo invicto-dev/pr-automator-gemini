@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import { CLIOptions, FinalOptions } from "./types";
-import { getCurrentBranch, getDiff } from "./git.service";
+import { getCurrentBranch, getCurrentBranchName, getDiff } from "./git.service";
 import { generatePRContent } from "./ai.service";
 import { githubService } from "./providers/github.service";
 import { gitlabService } from "./providers/gitlab.service";
@@ -85,13 +85,28 @@ export async function handleCreateCommand(options: CLIOptions) {
       return;
     }
 
+    const brachName = await getCurrentBranchName();
+    const defaultTitle = `${finalOptions.type.toUpperCase()}: ${brachName}`;
+
+    const { inputTitle } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "input_title",
+        message: "What is the title of the PR?",
+        default: defaultTitle,
+      },
+    ]);
+
     console.log("🧠 Generating content with Gemini AI...");
     const prContent = await generatePRContent(diff, finalOptions.type);
     if (!prContent) return;
 
     console.log("\n----------------------------------------");
-    console.log(`Title: ${prContent.title}`);
-    console.log(`Description:\n${prContent.body}`);
+    console.log(`Title: ${defaultTitle}`);
+    console.log("\n----------------------------------------");
+
+    console.log(`Content:\n${prContent.body}\n`);
+    console.log(`\n${prContent.body}`);
     console.log("----------------------------------------\n");
 
     const { proceed } = await inquirer.prompt([
@@ -118,12 +133,14 @@ export async function handleCreateCommand(options: CLIOptions) {
     if (finalOptions.provider === "github") {
       prUrl = await githubService.create({
         ...prContent,
+        title: inputTitle,
         head: currentBranch,
         base: finalOptions.base,
       });
     } else {
       prUrl = await gitlabService.create({
         ...prContent,
+        title: "meu",
         head: currentBranch,
         base: finalOptions.base,
       });

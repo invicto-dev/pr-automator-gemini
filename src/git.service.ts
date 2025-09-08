@@ -3,6 +3,18 @@ import { config } from "./config";
 
 const git: SimpleGit = simpleGit();
 
+export const getCurrentBranchName = async () => {
+  try {
+    const branchSummary = await git.branch();
+    const currentBranch = branchSummary.current;
+
+    return currentBranch;
+  } catch (error) {
+    console.error("Failed to get branch name:", error);
+    return undefined;
+  }
+};
+
 export const getCurrentBranch = async (): Promise<string> => {
   return await git.revparse(["--abbrev-ref", "HEAD"]);
 };

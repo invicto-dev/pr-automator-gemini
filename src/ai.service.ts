@@ -31,20 +31,9 @@ export async function generatePRContent(
   try {
     const result = await model.generateContent(prompt);
     const text = result.response.text();
-
-    const titleMatch = text.match(/Title: (.*)/);
-    const bodyMatch = text.match(/Body: ([\s\S]*)/);
-
-    if (titleMatch && bodyMatch) {
-      return {
-        title: titleMatch[1].trim(),
-        body: bodyMatch[1].trim(),
-      };
-    }
-    console.error(
-      "❌ The AI did not return the content in the expected format."
-    );
-    return null;
+    return {
+      body: text,
+    };
   } catch (error) {
     console.error("❌ Gemini API error:", error);
     return null;
