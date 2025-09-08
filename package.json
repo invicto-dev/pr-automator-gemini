@@ -1,6 +1,6 @@
 {
   "name": "pr-automator-gemini",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A CLI to automate the creation of Pull Requests on GitHub/GitLab using Google Gemini AI to generate titles and descriptions.",
   "main": "dist/index.js",
   "bin": {
