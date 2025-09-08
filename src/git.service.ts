@@ -8,7 +8,18 @@ export const getCurrentBranch = async (): Promise<string> => {
 };
 
 export const getDiff = async (baseBranch: string): Promise<string> => {
-  return await git.diff([baseBranch, "--staged"]);
+  const excludePatterns = [
+    ":(exclude)package-lock.json",
+    ":(exclude)yarn.lock",
+    ":(exclude)pnpm-lock.yaml",
+    ":(exclude)**/dist/**",
+    ":(exclude)**/*.min.js",
+    ":(exclude)**/*.snap",
+  ];
+
+  const diffCommand = [`${baseBranch}...HEAD`, "--", ".", ...excludePatterns];
+
+  return await git.diff(diffCommand);
 };
 
 export const getRepoDetails = async (): Promise<{

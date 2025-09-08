@@ -54,6 +54,20 @@ export async function handleCreateCommand(options: CLIOptions) {
   try {
     const finalOptions = await promptForMissingOptions(options);
 
+    if (finalOptions.provider === "github") {
+      if (!config.githubToken)
+        throw new Error(" PR_AUTOMATOR_GITHUB_TOKEN not defined in .env");
+    }
+
+    if (finalOptions.provider === "gitlab") {
+      if (!config.gitlabToken)
+        throw new Error(" PR_AUTOMATOR_GITLAB_TOKEN not defined in .env");
+      if (!config.gitlabProjectId)
+        throw new Error(" PR_AUTOMATOR_GITLAB_PROJECT_ID not defined in .env");
+      if (!config.gitLabApiUrl)
+        throw new Error(" PR_AUTOMATOR_GITLAB_API_URL not defined in .env");
+    }
+
     console.log("🤖 Analyzing changes...");
     const currentBranch = await getCurrentBranch();
     if (currentBranch === finalOptions.base) {
@@ -102,16 +116,12 @@ export async function handleCreateCommand(options: CLIOptions) {
 
     let prUrl: string | null = null;
     if (finalOptions.provider === "github") {
-      if (!config.githubToken)
-        throw new Error(" PR_AUTOMATOR_GITHUB_TOKEN not defined in .env");
       prUrl = await githubService.create({
         ...prContent,
         head: currentBranch,
         base: finalOptions.base,
       });
     } else {
-      if (!config.gitlabToken)
-        throw new Error(" PR_AUTOMATOR_GITLAB_TOKEN not defined in .env");
       prUrl = await gitlabService.create({
         ...prContent,
         head: currentBranch,
