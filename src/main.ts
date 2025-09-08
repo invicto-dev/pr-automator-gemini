@@ -102,10 +102,10 @@ export async function handleCreateCommand(options: CLIOptions) {
     if (!prContent) return;
 
     console.log("\n----------------------------------------");
-    console.log(`Title: ${defaultTitle}`);
+    console.log(`Title: ${inputTitle}`);
     console.log("\n----------------------------------------");
 
-    console.log(`Content:\n${prContent.body}\n`);
+    console.log(`Content:`);
     console.log(`\n${prContent.body}`);
     console.log("----------------------------------------\n");
 
@@ -140,7 +140,7 @@ export async function handleCreateCommand(options: CLIOptions) {
     } else {
       prUrl = await gitlabService.create({
         ...prContent,
-        title: "meu",
+        title: inputTitle,
         head: currentBranch,
         base: finalOptions.base,
       });
