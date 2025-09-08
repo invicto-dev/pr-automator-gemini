@@ -90,8 +90,8 @@ export async function handleCreateCommand(options: CLIOptions) {
 
     const { inputTitle } = await inquirer.prompt([
       {
-        type: "input",
-        name: "input_title",
+        type: "question",
+        name: "inputTitle",
         message: "What is the title of the PR?",
         default: defaultTitle,
       },
