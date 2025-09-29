@@ -3,9 +3,7 @@ export const issueTemplate = `
 clear and concise description of the task
 ---
 ## 📖 User Story
-**As a** [type of user]  
-**I want** [goal/action]  
-**So that** [benefit/value]
+As a [user type], I want [feature] so that [benefit].
 ---
 ## 🧪 How to Test
 1. Step-by-step instructions to validate the functionality.

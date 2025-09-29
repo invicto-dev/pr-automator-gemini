@@ -64,7 +64,9 @@ async function promptForMissingOptions(
     });
   }
 
-  const answers = await inquirer.prompt(questions);
+  const answers = await inquirer.prompt(
+    questions.filter((q) => q.name !== "provider")
+  );
 
   return {
     ...options,
