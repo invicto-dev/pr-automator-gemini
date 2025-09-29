@@ -21,6 +21,7 @@ program
     "-l, --language <language>",
     "Language of the repository (English, Spanish, Portuguese)"
   )
+  .option("-i, --issue <issue>", "GitHub issue number")
   .action((options: CLIOptions) => {
     handleCreateCommand(options);
   });

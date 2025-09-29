@@ -10,7 +10,7 @@ const selectTemplate = (type: string) => {
       return featureTemplate;
     case "bug":
       return bugTemplate;
-    case "documentation":
+    case "docs":
       return documentationTemplate;
     case "chore":
       return choreTemplate;

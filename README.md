@@ -3,27 +3,28 @@
 [![NPM Version](https://img.shields.io/npm/v/pr-automator-gemini.svg)](https://www.npmjs.com/package/pr-automator-gemini)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Tired of writing repetitive Pull Request descriptions? This command-line interface (CLI) tool automates the creation of Pull Requests (PRs) and Merge Requests (MRs), harnessing the power of **Google's Gemini AI** to generate intelligent titles and descriptions based on your code changes.
+Tired of writing repetitive Pull Request descriptions? This command-line interface (CLI) tool automates the lifecycle of your Pull Requests (PRs) and Merge Requests (MRs), leveraging the power of **Google's Gemini** AI to generate intelligent descriptions based on your code changes.
 
-Boost your productivity, standardize your documentation, and speed up the code review process!
+Now with smart updates and deep integration with GitHub Issues, you can go from code to a fully documented, review-ready PR in seconds. Boost your productivity, standardize your documentation, and speed up the code review process\!
 
 ## Key Features 🚀
 
-- **AI-Generated Content**: Analyzes the `git diff` to create detailed titles and descriptions for your PRs.
-- **Multi-Platform Support**: Works seamlessly with both **GitHub** and **GitLab**.
-- **Interactive Mode**: A step-by-step wizard that guides you through the PR creation process, perfect for getting started.
-- **Direct Mode with Flags**: For power users, pass all options directly in the command for maximum speed.
-- **Standardization**: Uses industry-common PR types (`feature`, `bug`, `refactor`, `chore`, `docs`).
+- **AI-Generated Content**: Analyzes the `git diff` to create detailed descriptions for your PRs.
+- **Multi-Platform Support**: Works seamlessly with **GitHub** and **GitLab**.
+- **🔄 Smart Updates**: Automatically detects if a PR/MR already exists for your branch and updates it, preventing duplicates.
+- **🔗 Automatic Issue Linking (GitHub)**: Intelligently links your PR to a GitHub Issue.
+- **📝 AI-Powered Issue Documentation (GitHub)**: When an issue is linked, the tool uses Gemini to fill out a detailed template (`Task Description`, `User Story`, `How to Test`) directly in the issue's description, saving a huge amount of documentation time.
+- **Interactive Mode**: A step-by-step wizard that guides you through the creation process.
 
 ---
 
 ## Prerequisites
 
-Before you begin, ensure you have the following:
+Before you begin, ensure you have:
 
 - **Node.js** (v18 or higher)
 - **Git** installed on your machine
-- A **Google Gemini API Key**. You can get one from the [Google AI Studio](https://aistudio.google.com/app/apikey).
+- A **Google Gemini API Key**. You can get one at [Google AI Studio](https://aistudio.google.com/app/apikey).
 
 ---
 
@@ -33,7 +34,7 @@ You can install the tool in two ways, depending on your needs.
 
 ### Option 1: Global Installation
 
-This is the recommended approach if you want to use `pr-automator-gemini` in **multiple projects** on your machine. The `create-pr` command will be available everywhere in your terminal.
+This is the recommended approach if you want to use `pr-automator-gemini` across **multiple projects** on your machine. The `create-pr` command will be available anywhere in your terminal.
 
 ```bash
 npm install -g pr-automator-gemini
@@ -41,7 +42,7 @@ npm install -g pr-automator-gemini
 
 ### Option 2: Local Installation
 
-This is ideal if you want to include the tool as a development dependency in a **single project**. This allows you to lock in a specific version for that project.
+Ideal if you want to include the tool as a development dependency in a **single project**. This allows you to lock a specific version for that project.
 
 ```bash
 npm install pr-automator-gemini --save-dev
@@ -51,9 +52,9 @@ npm install pr-automator-gemini --save-dev
 
 ## Configuration (Required Step) ⚙️
 
-For the tool to work, it needs your API keys. Create a file named `.env` in the **root of your project** (the one you want to create a PR for).
+For the tool to work, it needs your API keys. Create a file named `.env` in the **root of your project** (the one you want to create the PR for).
 
-Copy and paste the content below into your `.env` file and fill in your tokens:
+Copy and paste the content below into your `.env` file and fill it in with your tokens:
 
 ```env
 # Google Gemini API Key (Required)
@@ -69,20 +70,20 @@ PR_AUTOMATOR_GITLAB_TOKEN="glpat-your_gitlab_token_here"
 
 # GitLab API URL (Required for GitLab)
 PR_AUTOMATOR_GITLAB_API_URL="https://gitlab.com/api/v4"
-for enterprise users: https://gitlab.<company-name>.com/api/v4
+# for enterprise users: https://gitlab.<company-name>.com/api/v4
 
 # GitLab Project ID (Required for GitLab)
 # You can find this on your project's homepage in GitLab.
 PR_AUTOMATOR_GITLAB_PROJECT_ID="12345678"
 ```
 
-**Important**: Add the `.env` file to your `.gitignore` to never expose your secret keys!
+**Important**: Add the `.env` file to your `.gitignore` to never expose your secret keys\!
 
 ---
 
-## Usage 💻
+## How to Use 💻
 
-How you run the command depends on how you installed it. Navigate to your project's repository, add and commit your changes, and then follow the appropriate instructions below.
+How you run the command depends on how you installed it. Navigate to your project's repository, add and commit your changes, push to the remote repository, and then follow the appropriate instructions below.
 
 ### If Installed Globally
 
@@ -94,15 +95,9 @@ The `create-pr` command is directly available in your terminal.
 create-pr generate
 ```
 
-**Direct Mode (with flags):**
-
-```bash
-create-pr generate --type feature --base main --provider github
-```
-
 ### If Installed Locally
 
-You must use a package runner like `npx` to execute the command. `npx` will automatically find the command inside your project's `node_modules` folder.
+You must use a package runner like `npx` to run the command. `npx` will automatically find the command inside your project's `node_modules` folder.
 
 **Interactive Mode:**
 
@@ -110,42 +105,25 @@ You must use a package runner like `npx` to execute the command. `npx` will auto
 npx create-pr generate
 ```
 
-**Direct Mode (with flags):**
+### ✨ New: GitHub Issues Integration
 
-```bash
-npx create-pr generate --type feature --base main
-```
-
-**Alternative (using NPM Scripts):**
-You can also add the command to the `scripts` section of your project's `package.json` to create a handy shortcut.
-
-```json
-// package.json
-"scripts": {
-  "new-pr": "create-pr generate"
-}
-```
-
-Then, run it with:
-
-```bash
-npm run new-pr
-```
+To link and update a GitHub Issue. The tool will automatically update the issue's description with an AI-generated template and link the PR to it.
 
 ---
 
 ## Command Options
 
-| Flag         | Alias | Description                                  | Valid Options                                 | Default   |
-| ------------ | ----- | -------------------------------------------- | --------------------------------------------- | --------- |
-| `--type`     | `-t`  | The type of the Pull Request.                | `feature`, `bug`, `refactor`, `chore`, `docs` | `feature` |
-| `--base`     | `-b`  | The target branch for your Pull Request.     | Any existing branch name                      | `main`    |
-| `--provider` | `-p`  | The platform where the repository is hosted. | `github`, `gitlab`                            | `github`  |
-| `--language` | `-l`  | The pull request's output language.          | `English`, `Spanish`, `Portuguese`            | `English` |
+| Description                                          | Valid Options                                 | Default   |
+| :--------------------------------------------------- | :-------------------------------------------- | :-------- |
+| The type of the Pull Request.                        | `feature`, `bug`, `refactor`, `chore`, `docs` | `feature` |
+| The target branch for your Pull Request.             | Any existing branch name                      | `main`    |
+| The platform where the repository is hosted.         | `github`, `gitlab`                            | `github`  |
+| The output language of the Pull Request description. | `English`, `Spanish`, `Portuguese`            | `English` |
+| **(GitHub Only)** Issue \# to link and update.       | Any valid issue \#                            | `skip`    |
 
 ---
 
-## Contributing
+## How to Contribute
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -159,4 +137,4 @@ Contributions are what make the open-source community such an amazing place to l
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` file for more information.
+Distributed under the MIT License. See the `LICENSE` file for more information.
