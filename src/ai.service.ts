@@ -2,6 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { config } from "./config";
 import { PRContent, PRType } from "./types";
 import { generatePRTemplate } from "./templates";
+import { issueTemplate } from "./templates/issue";
 
 const genAI = new GoogleGenerativeAI(config.geminiApiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -38,5 +39,30 @@ export async function generatePRContent(
   } catch (error) {
     console.error("❌ Gemini API error:", error);
     return null;
+  }
+}
+
+export async function generateIssueContent(
+  diff: string,
+  language: "English" | "Spanish" | "Portuguese" = "English"
+): Promise<string | undefined> {
+  const optimizedDiff = getOptimizedDiff(diff);
+  const prompt = `
+  Based on the following code changes (diff), fill out the template provided for a GitHub issue in ${language}. Be concise and clear.
+  ${issueTemplate}
+
+  --- DIFF FOR ANALYSIS ---
+  ${optimizedDiff}
+--- END OF DIFF ---
+  `;
+
+  try {
+    const result = await model.generateContent(prompt);
+    return result.response.text();
+  } catch (error) {
+    console.error(
+      "❌ Gemini API error while generating issue content: ",
+      error
+    );
   }
 }

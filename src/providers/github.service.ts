@@ -14,18 +14,59 @@ class GitHubService implements IGitProvider {
     try {
       const { owner, repo } = await getRepoDetails();
 
-      const response = await this.octokit.pulls.create({
+      const existingPrs = await this.octokit.pulls.list({
         owner,
         repo,
-        title: options.title,
-        body: options.body,
-        head: options.head,
-        base: options.base,
+        head: `${owner}:${options.head}`,
+        state: "open",
       });
-      return response.data.html_url;
+
+      if (existingPrs.data.length > 0) {
+        const pr = existingPrs.data[0];
+        console.log(`⚠️ Found existing PR #${pr.number}. Updating...`);
+        const response = await this.octokit.pulls.update({
+          owner,
+          repo,
+          pull_number: pr.number,
+          title: options.title,
+          body: options.body,
+        });
+        return response.data.html_url;
+      } else {
+        const response = await this.octokit.pulls.create({
+          owner,
+          repo,
+          title: options.title,
+          body: options.body,
+          head: options.head,
+          base: options.base,
+        });
+        return response.data.html_url;
+      }
     } catch (error: any) {
       console.error(`❌ Error creating PR on GitHub: ${error.message}`);
       return null;
+    }
+  }
+
+  async updateIssueDescription(
+    issueNumber: number,
+    body: string
+  ): Promise<void> {
+    try {
+      const { owner, repo } = await getRepoDetails();
+      await this.octokit.issues.update({
+        owner,
+        repo,
+        issue_number: issueNumber,
+        body,
+      });
+      console.log(`✅ Issue #${issueNumber} description updated successfully.`);
+    } catch (error: any) {
+      console.error(
+        `❌ Error updating issue #${issueNumber} description:`,
+        error.message
+      );
     }
   }
 }

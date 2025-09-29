@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import { CLIOptions, FinalOptions } from "./types";
 import { getCurrentBranch, getCurrentBranchName, getDiff } from "./git.service";
-import { generatePRContent } from "./ai.service";
+import { generatePRContent, generateIssueContent } from "./ai.service";
 import { githubService } from "./providers/github.service";
 import { gitlabService } from "./providers/gitlab.service";
 import { config } from "./config";
@@ -40,6 +40,20 @@ async function promptForMissingOptions(
     });
   }
 
+  const provider =
+    options.provider ||
+    (await inquirer.prompt(questions.filter((q) => q.name === "provider")))
+      .provider;
+
+  if (provider === "github") {
+    questions.push({
+      type: "input",
+      name: "issue",
+      message:
+        "Link a GitHub issue number (e.g. 123) (optional, leave empty to skip)",
+    });
+  }
+
   if (!options.language) {
     questions.push({
       type: "list",
@@ -49,13 +63,17 @@ async function promptForMissingOptions(
       default: "English",
     });
   }
+
   const answers = await inquirer.prompt(questions);
 
   return {
     ...options,
     type: options.type || answers.type,
     base: options.base || answers.base,
-    provider: options.provider || answers.provider,
+    provider: provider,
+    issue:
+      options.issue ||
+      (answers.issue ? parseInt(answers.issue, 10) : undefined),
     language: options.language || answers.language,
   };
 }
@@ -137,8 +155,23 @@ export async function handleCreateCommand(options: CLIOptions) {
       return;
     }
 
+    if (finalOptions.provider === "github" && finalOptions.issue) {
+      console.log(
+        `📝 Generating description for issue #${finalOptions.issue}...`
+      );
+      const issueBody = await generateIssueContent(diff);
+      if (issueBody) {
+        await githubService.updateIssueDescription(
+          finalOptions.issue,
+          issueBody
+        );
+      }
+      console.log(`🔗 Linking PR to issue #${finalOptions.issue}...`);
+      prContent.body += `\n\n---\n\nCloses #${finalOptions.issue}`;
+    }
+
     console.log(
-      `🚀 Creating ${
+      `🚀 Generating ${
         finalOptions.provider === "github" ? "Pull Request" : "Merge Request"
       }...`
     );
