@@ -2,8 +2,8 @@ export const refactorTemplate = `
 **:sparkles: Refactoring: [Description of refactoring]**
 
 **Description**
-_Describe what was refactored and why. The goal may be to improve readability, performance, maintainability, etc._
+Describe what was refactored and why. The goal may be to improve readability, performance, maintainability, etc.
 
 **Main changes**
-_List the most significant changes in the code._
+List the most significant changes in the code.
 `;

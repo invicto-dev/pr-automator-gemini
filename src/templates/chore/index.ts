@@ -2,14 +2,14 @@ export const choreTemplate = `
 **:broom: Task: [Task description]**
 
 **Description**
-_Describe the task that was performed._
+Describe the task that was performed.
 
 **Motivation**
-_Explain why this task was necessary._
+Explain why this task was necessary.
 
 **Changes made**
-_List the specific changes that were implemented._
+List the specific changes that were implemented.
 
 **Impact**
-_Describe the impact of these changes on the development environment or build process._
+Describe the impact of these changes on the development environment or build process.
 `;
