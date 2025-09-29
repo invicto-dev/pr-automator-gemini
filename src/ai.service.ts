@@ -22,11 +22,12 @@ function getOptimizedDiff(fullDiff: string): string {
 
 export async function generatePRContent(
   diff: string,
-  type: PRType
+  type: PRType,
+  language: "English" | "Spanish" | "Portuguese" = "English"
 ): Promise<PRContent | null> {
   const optimizedDiff = getOptimizedDiff(diff);
 
-  const prompt = generatePRTemplate(optimizedDiff, type);
+  const prompt = generatePRTemplate(optimizedDiff, type, language);
 
   try {
     const result = await model.generateContent(prompt);

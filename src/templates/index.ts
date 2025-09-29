@@ -23,11 +23,12 @@ const selectTemplate = (type: string) => {
 
 export const generatePRTemplate = (
   diff: string,
-  type: string = "feature"
+  type: string = "feature",
+  language: "English" | "Spanish" | "Portuguese" = "English"
 ): string => `
-You are a software engineering specialist assistant who creates perfect Pull Requests. Your task is to generate a PR based on the code diff
+You are a software engineering specialist assistant who creates perfect Pull Requests in the ${language} language. Your task is to generate a PR based on the code difference.
 
-Based on the code difference below, generate the PR description in the following template:
+Based on the code difference below, generate the PR description focusing on the main points, without being too lengthy, using the following template:
 
 ${selectTemplate(type)}
 
