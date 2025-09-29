@@ -1,13 +1,13 @@
 export const choreTemplate = `
-**:broom: Chore: [Description of the Task]**
+**:broom: Task: [Task description]**
 
 **Description**
-_Describe the task that was performed. Examples include updating dependencies, configuring CI/CD tools, adjusting the build process, etc._
+_Describe the task that was performed._
 
 **Motivation**
 _Explain why this task was necessary._
 
-**Changes Made**
+**Changes made**
 _List the specific changes that were implemented._
 
 **Impact**

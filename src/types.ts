@@ -5,12 +5,14 @@ export interface CLIOptions {
   type?: PRType;
   base?: string;
   provider?: GitProvider;
+  language?: "English" | "Spanish" | "Portuguese";
 }
 
 export interface FinalOptions {
   type: PRType;
   base: string;
   provider: GitProvider;
+  language: "English" | "Spanish" | "Portuguese";
 }
 
 export interface PRContent {

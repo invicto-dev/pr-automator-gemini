@@ -9,7 +9,7 @@ const program = new Command();
 
 program
   .version(pkg.version)
-  .command("create")
+  .command("generate")
   .description("Create a new Pull/Merge Request with AI")
   .option(
     "-t, --type <type>",
@@ -17,6 +17,10 @@ program
   )
   .option("-b, --base <base>", "Destination branch (e.g., main, develop)")
   .option("-p, --provider <provider>", "Git platform (GitHub or GitLab)")
+  .option(
+    "-l, --language <language>",
+    "Language of the repository (English, Spanish, Portuguese)"
+  )
   .action((options: CLIOptions) => {
     handleCreateCommand(options);
   });

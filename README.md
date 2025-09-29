@@ -91,13 +91,13 @@ The `create-pr` command is directly available in your terminal.
 **Interactive Mode:**
 
 ```bash
-create-pr create
+create-pr generate
 ```
 
 **Direct Mode (with flags):**
 
 ```bash
-create-pr create --type feature --base main --provider github
+create-pr generate --type feature --base main --provider github
 ```
 
 ### If Installed Locally
@@ -107,13 +107,13 @@ You must use a package runner like `npx` to execute the command. `npx` will auto
 **Interactive Mode:**
 
 ```bash
-npx create-pr create
+npx create-pr generate
 ```
 
 **Direct Mode (with flags):**
 
 ```bash
-npx create-pr create --type feature --base main
+npx create-pr generate --type feature --base main
 ```
 
 **Alternative (using NPM Scripts):**
@@ -122,7 +122,7 @@ You can also add the command to the `scripts` section of your project's `package
 ```json
 // package.json
 "scripts": {
-  "new-pr": "create-pr create"
+  "new-pr": "create-pr generate"
 }
 ```
 
@@ -141,6 +141,7 @@ npm run new-pr
 | `--type`     | `-t`  | The type of the Pull Request.                | `feature`, `bug`, `refactor`, `chore`, `docs` | `feature` |
 | `--base`     | `-b`  | The target branch for your Pull Request.     | Any existing branch name                      | `main`    |
 | `--provider` | `-p`  | The platform where the repository is hosted. | `github`, `gitlab`                            | `github`  |
+| `--language` | `-l`  | The pull request's output language.          | `English`, `Spanish`, `Portuguese`            | `English` |
 
 ---
 

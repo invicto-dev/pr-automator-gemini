@@ -40,6 +40,15 @@ async function promptForMissingOptions(
     });
   }
 
+  if (!options.language) {
+    questions.push({
+      type: "list",
+      name: "language",
+      message: "What is the language of the repository?",
+      choices: ["English", "Spanish", "Portuguese"],
+      default: "English",
+    });
+  }
   const answers = await inquirer.prompt(questions);
 
   return {
@@ -47,6 +56,7 @@ async function promptForMissingOptions(
     type: options.type || answers.type,
     base: options.base || answers.base,
     provider: options.provider || answers.provider,
+    language: options.language || answers.language,
   };
 }
 
@@ -98,7 +108,11 @@ export async function handleCreateCommand(options: CLIOptions) {
     ]);
 
     console.log("🧠 Generating content with Gemini AI...");
-    const prContent = await generatePRContent(diff, finalOptions.type);
+    const prContent = await generatePRContent(
+      diff,
+      finalOptions.type,
+      finalOptions.language
+    );
     if (!prContent) return;
 
     console.log("\n----------------------------------------");
