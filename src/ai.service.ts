@@ -48,7 +48,7 @@ export async function generateIssueContent(
 ): Promise<string | undefined> {
   const optimizedDiff = getOptimizedDiff(diff);
   const prompt = `
-  Based on the following code changes (diff), fill out the template provided for a GitHub issue in ${language}. Be concise and clear.
+  Based on the following code changes (diff), fill out the template provided for a GitHub issue in ${language}. Be concise and clear. Provide only the completed template, without additional comments.
   ${issueTemplate}
 
   --- DIFF FOR ANALYSIS ---
