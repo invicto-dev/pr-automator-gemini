@@ -15,7 +15,6 @@ Now with smart updates and deep integration with GitHub Issues, you can go from 
 - **🔗 Automatic Issue Linking (GitHub)**: Intelligently links your PR to a GitHub Issue.
 - **📝 AI-Powered Issue Documentation (GitHub)**: When an issue is linked, the tool uses Gemini to fill out a detailed template (`Task Description`, `User Story`, `How to Test`) directly in the issue's description, saving a huge amount of documentation time.
 - **Interactive Mode**: A step-by-step wizard that guides you through the creation process.
-- **Direct Mode with Flags**: For advanced users, pass all options directly in the command for maximum speed.
 
 ---
 
@@ -96,12 +95,6 @@ The `create-pr` command is directly available in your terminal.
 create-pr generate
 ```
 
-**Direct Mode (with flags):**
-
-```bash
-create-pr generate --type feature --base main --provider github
-```
-
 ### If Installed Locally
 
 You must use a package runner like `npx` to run the command. `npx` will automatically find the command inside your project's `node_modules` folder.
@@ -112,34 +105,21 @@ You must use a package runner like `npx` to run the command. `npx` will automati
 npx create-pr generate
 ```
 
-**Direct Mode (with flags):**
-
-```bash
-npx create-pr generate --type feature --base main
-```
-
 ### ✨ New: GitHub Issues Integration
 
-To link and update a GitHub Issue, use the `--issue` flag. The tool will automatically update the issue's description with an AI-generated template and link the PR to it.
-
-```bash
-# Example: Link and document Issue #42
-create-pr generate --type bug --base develop --issue 42
-```
-
-**Don't need a flag?** If you don't provide an issue number, the tool will skip automatic linking.
+To link and update a GitHub Issue. The tool will automatically update the issue's description with an AI-generated template and link the PR to it.
 
 ---
 
 ## Command Options
 
-| Flag         | Shortcut | Description                                          | Valid Options                                 | Default         |
-| :----------- | :------- | :--------------------------------------------------- | :-------------------------------------------- | :-------------- |
-| `--type`     | `-t`     | The type of the Pull Request.                        | `feature`, `bug`, `refactor`, `chore`, `docs` | `feature`       |
-| `--base`     | `-b`     | The target branch for your Pull Request.             | Any existing branch name                      | `main`          |
-| `--provider` | `-p`     | The platform where the repository is hosted.         | `github`, `gitlab`                            | `github`        |
-| `--language` | `-l`     | The output language of the Pull Request description. | `English`, `Spanish`, `Portuguese`            | `English`       |
-| `--issue`    | `-i`     | **(GitHub Only)** Issue \# to link and update.       | Any valid issue \#                            | `Auto-detected` |
+| Description                                          | Valid Options                                 | Default   |
+| :--------------------------------------------------- | :-------------------------------------------- | :-------- |
+| The type of the Pull Request.                        | `feature`, `bug`, `refactor`, `chore`, `docs` | `feature` |
+| The target branch for your Pull Request.             | Any existing branch name                      | `main`    |
+| The platform where the repository is hosted.         | `github`, `gitlab`                            | `github`  |
+| The output language of the Pull Request description. | `English`, `Spanish`, `Portuguese`            | `English` |
+| **(GitHub Only)** Issue \# to link and update.       | Any valid issue \#                            | `skip`    |
 
 ---
 
