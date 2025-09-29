@@ -5,6 +5,7 @@ export interface CLIOptions {
   type?: PRType;
   base?: string;
   provider?: GitProvider;
+  issue?: number;
   language?: "English" | "Spanish" | "Portuguese";
 }
 
@@ -12,6 +13,7 @@ export interface FinalOptions {
   type: PRType;
   base: string;
   provider: GitProvider;
+  issue: number | undefined;
   language: "English" | "Spanish" | "Portuguese";
 }
 

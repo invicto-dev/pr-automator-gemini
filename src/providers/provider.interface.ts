@@ -3,6 +3,7 @@ export interface CreatePROptions {
   base: string;
   title: string;
   body: string;
+  issueNumber?: number;
 }
 
 export interface IGitProvider {
